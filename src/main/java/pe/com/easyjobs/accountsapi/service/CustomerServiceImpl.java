@@ -2,12 +2,16 @@ package pe.com.easyjobs.accountsapi.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pe.com.easyjobs.accountsapi.entity.Customer;
 import pe.com.easyjobs.accountsapi.repository.CustomerRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -17,25 +21,25 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
 
     @Override
-    public Customer getById(Long id) {
-        return customerRepository.findById(id).orElse(null);
+    public Optional<Customer> getById(Long id) {
+        return customerRepository.findById(id);
     }
 
     @Override
     public Customer createCustomer(Customer customer) {
-        customer.setUpdatedDate(new Date());
-        customer.setRegisterDate(new Date());
+        customer.setUpdatedDate_n(new Date());
+        customer.setRegisterDate_n(new Date());
         return customerRepository.save(customer);
     }
 
     @Override
     public Customer updateCustomer(Long id) {
-        Customer customer = getById(id);
+        Optional<Customer> customer = getById(id);
         if(customer == null) {
             return null;
         }
-        customer.setUpdatedDate(new Date());
-        return customerRepository.save(customer);
+        customer.get().setUpdatedDate_n(new Date());
+        return customerRepository.save(customer.get());
     }
 
     @Override

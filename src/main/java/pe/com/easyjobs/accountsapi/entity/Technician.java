@@ -1,35 +1,52 @@
 package pe.com.easyjobs.accountsapi.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_technician")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class Technician extends User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
     @Column(unique = true, length = 40)
-    private String phoneNumber;
+    private Long phoneNumber_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String firstName;
+    private String firstName_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String lastName;
+    private String lastName_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String address;
+    private String address_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String city;
+    private String city_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String district;
+    private String district_n;
+
+    @NotNull
     @Column(unique = true)
-    private Boolean verified;
+    private Boolean verified_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String gender;
+    private String gender_n;
 }

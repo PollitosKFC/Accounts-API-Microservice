@@ -1,42 +1,57 @@
 package pe.com.easyjobs.accountsapi.entity;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "tbl_user")
+
+
 @Data
+@MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String userName;
+    private String userName_n;
+
+    @NotNull
     @Column(unique = true, length = 250)
-    private String password;
+    private String password_n;
+
+    @NotNull
     @Column(unique = true, length = 250)
-    private String email;
+    private String email_n;
+
+    @NotNull
     @Column(unique = true, length = 50)
-    private String type;
+    private String type_n;
+
+    @NotNull
     @Column(unique = true, length = 200)
-    private String identificationType;
+    private String identificationType_n;
+
+    @NotNull
+    @Column()
+    private int identificationNumber_n;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(unique = true)
-    private int identificationNumber;
+    private Date registerDate_n;
+
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date registerDate;
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedDate;
+    @Column(unique = true)
+    private Date updatedDate_n;
 
 }

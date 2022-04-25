@@ -1,12 +1,16 @@
 package pe.com.easyjobs.accountsapi.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pe.com.easyjobs.accountsapi.entity.Technician;
 import pe.com.easyjobs.accountsapi.repository.TechnicianRepository;
 
 import java.util.Date;
 import java.util.List;
-
+@Service
+@RequiredArgsConstructor
 public class TechnicianServiceImpl implements TechnicianService{
 
     @Autowired
@@ -19,8 +23,8 @@ public class TechnicianServiceImpl implements TechnicianService{
 
     @Override
     public Technician createTechnician(Technician technician) {
-        technician.setUpdatedDate(new Date());
-        technician.setRegisterDate(new Date());
+        technician.setUpdatedDate_n(new Date());
+        technician.setRegisterDate_n(new Date());
         return technicianRepository.save(technician);
     }
 
@@ -30,7 +34,7 @@ public class TechnicianServiceImpl implements TechnicianService{
         if(technician == null) {
             return null;
         }
-        technician.setUpdatedDate(new Date());
+        technician.setUpdatedDate_n(new Date());
         return technicianRepository.save(technician);
     }
 
