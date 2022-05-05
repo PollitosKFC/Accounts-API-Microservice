@@ -12,4 +12,5 @@ import java.util.List;
 public interface TechnicianRepository extends JpaRepository<Technician, Long> {
     //Technician listTechicianbyId(Long id);
     // List<Technician> listAllTechicians();
+    Technician findTechnicianById(Long id);
 }

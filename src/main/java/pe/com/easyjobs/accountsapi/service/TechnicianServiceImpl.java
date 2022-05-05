@@ -18,8 +18,8 @@ public class TechnicianServiceImpl implements TechnicianService{
     private TechnicianRepository technicianRepository;
 
     @Override
-    public Technician getById(Long id) {
-        return technicianRepository.getById(id);
+    public Technician getByTechnicianId(Long id) {
+        return technicianRepository.findTechnicianById(id);
     }
 
     @Override

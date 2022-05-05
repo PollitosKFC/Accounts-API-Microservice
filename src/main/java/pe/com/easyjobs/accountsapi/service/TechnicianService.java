@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface TechnicianService {
     List<Technician> getAllTechnicians();
-    Technician getById(Long id);
+    Technician getByTechnicianId(Long id);
     Technician updateTechnician(Long id, Technician technician);
     Technician createTechnician(Technician technician);
     Technician deleteTechnician(Long id);

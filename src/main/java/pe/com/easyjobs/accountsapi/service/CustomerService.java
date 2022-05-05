@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public interface CustomerService {
-    Customer getById(Long id);
+    Customer getByCustomerId(Long id);
     Customer updateCustomer(Long id, Customer customer);
     Customer createCustomer(Customer customer);
     Customer deleteCustomer(Long id);

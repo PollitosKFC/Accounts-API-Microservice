@@ -23,7 +23,7 @@ public class TechnicianController {
 
     @GetMapping(value = "/getTechnician/{id}")
     public ResponseEntity<Technician> getTechnician(@PathVariable("id") Long id){
-        Technician technician = technicianService.getById(id);
+        Technician technician = technicianService.getByTechnicianId(id);
         return ResponseEntity.ok(technician);
     }
 
