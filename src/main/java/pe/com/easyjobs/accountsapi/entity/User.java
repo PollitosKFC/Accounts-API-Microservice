@@ -22,36 +22,40 @@ public class User{
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String userName_n;
+    private String userName;
 
     @NotNull
     @Column(unique = true, length = 250)
-    private String password_n;
+    private String password;
 
     @NotNull
     @Column(unique = true, length = 250)
-    private String email_n;
+    private String email;
 
     @NotNull
     @Column(unique = true, length = 50)
-    private String type_n;
+    private String type;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String identificationType_n;
+    private String identificationType;
 
     @NotNull
     @Column()
-    private int identificationNumber_n;
+    private int identificationNumber;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(unique = true)
-    private Date registerDate_n;
+    private Date registerDate;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(unique = true)
-    private Date updatedDate_n;
+    private Date updatedDate;
+
+    @NotNull
+    @Column(unique = true)
+    private boolean activated;
 
 }

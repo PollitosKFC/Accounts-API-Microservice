@@ -20,33 +20,33 @@ public class Technician extends User {
 
     @NotNull
     @Column(unique = true, length = 40)
-    private Long phoneNumber_n;
+    private Long phoneNumber;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String firstName_n;
+    private String firstName;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String lastName_n;
+    private String lastName;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String address_n;
+    private String address;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String city_n;
+    private String city;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String district_n;
+    private String district;
 
     @NotNull
     @Column(unique = true)
-    private Boolean verified_n;
+    private Boolean verified;
 
     @NotNull
     @Column(unique = true, length = 200)
-    private String gender_n;
+    private String gender;
 }

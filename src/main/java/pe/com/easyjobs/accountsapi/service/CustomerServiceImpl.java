@@ -21,35 +21,58 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
 
     @Override
-    public Optional<Customer> getById(Long id) {
-        return customerRepository.findById(id);
+    public Customer getById(Long id) {
+        return customerRepository.getById(id);
     }
 
     @Override
     public Customer createCustomer(Customer customer) {
-        customer.setUpdatedDate_n(new Date());
-        customer.setRegisterDate_n(new Date());
+        Customer newCustomer = new Customer();
+        newCustomer.setRegisterDate(new Date());
+        newCustomer.setUpdatedDate(new Date());
+        newCustomer.setFirstName(customer.getFirstName());
+        newCustomer.setLastName(customer.getLastName());
+        newCustomer.setEmail(customer.getEmail());
+        newCustomer.setPassword(customer.getPassword());
+        newCustomer.setPhoneNumber(customer.getPhoneNumber());
+        newCustomer.setAddress(customer.getAddress());
+        newCustomer.setCity(customer.getCity());
+        newCustomer.setDistrict(customer.getDistrict());
+        newCustomer.setGender(customer.getGender());
+        newCustomer.setType("CUSTOMER");
+        newCustomer.setActivated(true);
+        newCustomer.setIdentificationType(customer.getIdentificationType());
+        newCustomer.setIdentificationNumber(customer.getIdentificationNumber());
         return customerRepository.save(customer);
     }
 
     @Override
-    public Customer updateCustomer(Long id) {
-        Optional<Customer> customer = getById(id);
-        if(customer == null) {
+    public Customer updateCustomer(Long id, Customer customer) {
+        Customer customerToUpdate = customerRepository.getById(id);
+        if(customerToUpdate == null) {
             return null;
         }
-        customer.get().setUpdatedDate_n(new Date());
-        return customerRepository.save(customer.get());
+        customerToUpdate.setUpdatedDate(new Date());
+        customerToUpdate.setFirstName(customer.getFirstName());
+        customerToUpdate.setLastName(customer.getLastName());
+        customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
+        customerToUpdate.setAddress(customer.getAddress());
+        customerToUpdate.setCity(customer.getCity());
+        customerToUpdate.setDistrict(customer.getDistrict());
+        customerToUpdate.setGender(customer.getGender());
+        customerToUpdate.setIdentificationType(customer.getIdentificationType());
+        customerToUpdate.setIdentificationNumber(customer.getIdentificationNumber());
+        return customerRepository.save(customerToUpdate);
     }
 
     @Override
-    public boolean deleteCustomer(Long id) {
-        customerRepository.deleteById(id);
-        if (getById(id) == null) {
-            return true;
-        }else {
-            return false;
+    public Customer deleteCustomer(Long id) {
+        Customer customerToDeactivate = customerRepository.getById(id);
+        if(customerToDeactivate == null) {
+            return null;
         }
+        customerToDeactivate.setActivated(false);
+        return customerRepository.save(customerToDeactivate);
     }
 
     @Override

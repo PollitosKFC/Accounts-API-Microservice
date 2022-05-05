@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import pe.com.easyjobs.accountsapi.entity.Customer;
 import pe.com.easyjobs.accountsapi.entity.Technician;
 import pe.com.easyjobs.accountsapi.repository.TechnicianRepository;
 
@@ -18,34 +19,59 @@ public class TechnicianServiceImpl implements TechnicianService{
 
     @Override
     public Technician getById(Long id) {
-        return technicianRepository.findById(id).orElse(null);
+        return technicianRepository.getById(id);
     }
 
     @Override
     public Technician createTechnician(Technician technician) {
-        technician.setUpdatedDate_n(new Date());
-        technician.setRegisterDate_n(new Date());
+        Technician newTechnician = new Technician();
+        newTechnician.setRegisterDate(new Date());
+        newTechnician.setUpdatedDate(technician.getUpdatedDate());
+        newTechnician.setFirstName(technician.getFirstName());
+        newTechnician.setLastName(technician.getLastName());
+        newTechnician.setEmail(technician.getEmail());
+        newTechnician.setVerified(technician.getVerified());
+        newTechnician.setPassword(technician.getPassword());
+        newTechnician.setPhoneNumber(technician.getPhoneNumber());
+        newTechnician.setAddress(technician.getAddress());
+        newTechnician.setCity(technician.getCity());
+        newTechnician.setDistrict(technician.getDistrict());
+        newTechnician.setGender(technician.getGender());
+        newTechnician.setType("TECHNICIAN");
+        newTechnician.setVerified(false);
+        newTechnician.setActivated(true);
+        newTechnician.setIdentificationType(technician.getIdentificationType());
+        newTechnician.setIdentificationNumber(technician.getIdentificationNumber());
         return technicianRepository.save(technician);
     }
 
     @Override
-    public Technician updateTechnician(Long id) {
-        Technician technician = getById(id);
-        if(technician == null) {
+    public Technician updateTechnician(Long id, Technician technician) {
+        Technician technicianToUpdate = technicianRepository.getById(id);
+        if(technicianToUpdate == null) {
             return null;
         }
-        technician.setUpdatedDate_n(new Date());
-        return technicianRepository.save(technician);
+        technicianToUpdate.setUpdatedDate(new Date());
+        technicianToUpdate.setFirstName(technician.getFirstName());
+        technicianToUpdate.setLastName(technician.getLastName());
+        technicianToUpdate.setPhoneNumber(technician.getPhoneNumber());
+        technicianToUpdate.setAddress(technician.getAddress());
+        technicianToUpdate.setCity(technician.getCity());
+        technicianToUpdate.setDistrict(technician.getDistrict());
+        technicianToUpdate.setGender(technician.getGender());
+        technicianToUpdate.setIdentificationType(technician.getIdentificationType());
+        technicianToUpdate.setIdentificationNumber(technician.getIdentificationNumber());
+        return technicianRepository.save(technicianToUpdate);
     }
 
     @Override
-    public boolean deleteTechnician(Long id) {
-        technicianRepository.deleteById(id);
-        if (getById(id) == null) {
-            return true;
-        }else {
-            return false;
+    public Technician deleteTechnician(Long id) {
+        Technician technicianToDeactivate = technicianRepository.getById(id);
+        if(technicianToDeactivate == null) {
+            return null;
         }
+        technicianToDeactivate.setActivated(false);
+        return technicianRepository.save(technicianToDeactivate);
     }
 
     @Override

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public interface CustomerService {
-    Optional<Customer> getById(Long id) throws Exception;
-    Customer updateCustomer(Long id);
+    Customer getById(Long id);
+    Customer updateCustomer(Long id, Customer customer);
     Customer createCustomer(Customer customer);
-    boolean deleteCustomer(Long id);
+    Customer deleteCustomer(Long id);
     List<Customer> getAllCustomers();
 }
