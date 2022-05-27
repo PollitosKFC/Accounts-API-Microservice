@@ -1,11 +1,17 @@
 package pe.com.easyjobs.accountsapi.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pe.com.easyjobs.accountsapi.entity.Technician;
+import pe.com.easyjobs.accountsapi.resource.SaveTechnicianResource;
+import pe.com.easyjobs.accountsapi.resource.TechnicianResource;
 import pe.com.easyjobs.accountsapi.service.TechnicianService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RestController
@@ -14,35 +20,52 @@ import pe.com.easyjobs.accountsapi.service.TechnicianService;
 public class TechnicianController {
     @Autowired
     private TechnicianService technicianService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping(value = "/createTechnician")
-    public ResponseEntity<Technician> createTechnician(@RequestBody Technician technician){
-        Technician technicianCreated = technicianService.createTechnician(technician);
-        return ResponseEntity.ok(technicianCreated);
+    public TechnicianResource createTechnician(@RequestBody SaveTechnicianResource resource) {
+        Technician technicianCreated = technicianService.createTechnician(convertToEntity(resource));
+        return convertToResource(technicianCreated);
     }
 
-    @GetMapping(value = "/getTechnician/{id}")
-    public ResponseEntity<Technician> getTechnician(@PathVariable("id") Long id){
+    @GetMapping(value = "/findTechnicianById/{technicianId}")
+    public TechnicianResource getTechnician(@PathVariable("technicianId") Long id){
         Technician technician = technicianService.getByTechnicianId(id);
-        return ResponseEntity.ok(technician);
+        if (technician == null) {
+            return null;
+        }
+        return convertToResource(technician);
     }
 
-    @GetMapping(value = "/getTechnicians")
-    public ResponseEntity<Iterable<Technician>> getTechnicians(){
-        Iterable<Technician> technicians = technicianService.getAllTechnicians();
-        return ResponseEntity.ok(technicians);
+    @GetMapping(value = "/findAllTechnicians")
+    public List<TechnicianResource> getTechnicians(){
+        List<Technician> technicians = technicianService.getAllTechnicians();
+        if (technicians == null) {
+            return null;
+        }
+        List<TechnicianResource> technicianResourceList = technicians.stream().map(technician -> {
+            return convertToResource(technician);
+        }).collect(Collectors.toList());
+        return technicianResourceList;
     }
 
     @PutMapping(value = "/updateTechnician/{id}")
-    public ResponseEntity<Technician> updateTechnician(@PathVariable("id") Long id, @RequestBody Technician technician){
-        Technician technicianUpdated = technicianService.updateTechnician(id, technician);
-        return ResponseEntity.ok(technicianUpdated);
+    public TechnicianResource updateTechnician(@PathVariable("id") Long id, @RequestBody SaveTechnicianResource technician){
+        Technician technicianUpdated = technicianService.updateTechnician(id, convertToEntity(technician));
+        return convertToResource(technicianUpdated);
     }
 
-    @PutMapping(value = "/deleteTechnician/{id}")
-    public ResponseEntity<Technician> deleteTechnician(@PathVariable("id") Long id){
+    @DeleteMapping(value = "/deleteTechnician/{id}")
+    public TechnicianResource deleteTechnician(@PathVariable("id") Long id){
         Technician technicianDeleted = technicianService.deleteTechnician(id);
-        return ResponseEntity.ok(technicianDeleted);
+        return convertToResource(technicianDeleted);
+    }
+    private Technician convertToEntity(SaveTechnicianResource resource){
+    return modelMapper.map(resource, Technician.class);
+    }
+    private TechnicianResource convertToResource(Technician entity) {
+        return modelMapper.map(entity, TechnicianResource.class);
     }
 }
 

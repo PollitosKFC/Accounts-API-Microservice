@@ -19,14 +19,19 @@ public class TechnicianServiceImpl implements TechnicianService{
 
     @Override
     public Technician getByTechnicianId(Long id) {
+        Technician technician = technicianRepository.findTechnicianById(id);
+        if (technician == null || technician.getActivated() == false) {
+            throw new RuntimeException("No se encontró el técnico con id: " + id);
+        }
         return technicianRepository.findTechnicianById(id);
     }
 
     @Override
     public Technician createTechnician(Technician technician) {
         Technician newTechnician = new Technician();
+        newTechnician.setUserName(technician.getUserName());
         newTechnician.setRegisterDate(new Date());
-        newTechnician.setUpdatedDate(technician.getUpdatedDate());
+        newTechnician.setUpdatedDate(new Date());
         newTechnician.setFirstName(technician.getFirstName());
         newTechnician.setLastName(technician.getLastName());
         newTechnician.setEmail(technician.getEmail());
@@ -42,16 +47,19 @@ public class TechnicianServiceImpl implements TechnicianService{
         newTechnician.setActivated(true);
         newTechnician.setIdentificationType(technician.getIdentificationType());
         newTechnician.setIdentificationNumber(technician.getIdentificationNumber());
-        return technicianRepository.save(technician);
+        return technicianRepository.save(newTechnician);
     }
 
     @Override
     public Technician updateTechnician(Long id, Technician technician) {
         Technician technicianToUpdate = technicianRepository.getById(id);
-        if(technicianToUpdate == null) {
+        if(technicianToUpdate == null || technicianToUpdate.getActivated() == false){
             return null;
         }
         technicianToUpdate.setUpdatedDate(new Date());
+        technicianToUpdate.setUserName(technician.getUserName());
+        technicianToUpdate.setEmail(technician.getEmail());
+        technicianToUpdate.setPassword(technician.getPassword());
         technicianToUpdate.setFirstName(technician.getFirstName());
         technicianToUpdate.setLastName(technician.getLastName());
         technicianToUpdate.setPhoneNumber(technician.getPhoneNumber());
@@ -67,7 +75,7 @@ public class TechnicianServiceImpl implements TechnicianService{
     @Override
     public Technician deleteTechnician(Long id) {
         Technician technicianToDeactivate = technicianRepository.getById(id);
-        if(technicianToDeactivate == null) {
+        if(technicianToDeactivate == null|| technicianToDeactivate.getActivated() == false){
             return null;
         }
         technicianToDeactivate.setActivated(false);
@@ -76,6 +84,6 @@ public class TechnicianServiceImpl implements TechnicianService{
 
     @Override
     public List<Technician> getAllTechnicians() {
-        return technicianRepository.findAll();
+        return technicianRepository.getAllTechnicians();
     }
 }

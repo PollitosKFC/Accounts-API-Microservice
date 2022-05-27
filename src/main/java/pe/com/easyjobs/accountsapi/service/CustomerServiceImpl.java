@@ -22,12 +22,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getByCustomerId(Long id) {
+        Customer customer = customerRepository.findCustomerById(id);
+        if (customer == null|| customer.getActivated() == false) {
+            throw new RuntimeException("Customer not found");
+        }
         return customerRepository.findCustomerById(id);
     }
 
     @Override
     public Customer createCustomer(Customer customer) {
         Customer newCustomer = new Customer();
+        newCustomer.setUserName(customer.getUserName());
         newCustomer.setRegisterDate(new Date());
         newCustomer.setUpdatedDate(new Date());
         newCustomer.setFirstName(customer.getFirstName());
@@ -41,34 +46,33 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setGender(customer.getGender());
         newCustomer.setType("CUSTOMER");
         newCustomer.setActivated(true);
-        newCustomer.setIdentificationType(customer.getIdentificationType());
-        newCustomer.setIdentificationNumber(customer.getIdentificationNumber());
-        return customerRepository.save(customer);
+        return customerRepository.save(newCustomer);
     }
 
     @Override
     public Customer updateCustomer(Long id, Customer customer) {
-        Customer customerToUpdate = customerRepository.getById(id);
-        if(customerToUpdate == null) {
+        Customer customerToUpdate = customerRepository.findCustomerById(id);
+        if(customerToUpdate == null || customerToUpdate.getActivated() == false){
             return null;
         }
         customerToUpdate.setUpdatedDate(new Date());
+        customerToUpdate.setEmail(customer.getEmail());
+        customerToUpdate.setPassword(customer.getPassword());
         customerToUpdate.setFirstName(customer.getFirstName());
+        customerToUpdate.setUserName(customer.getUserName());
         customerToUpdate.setLastName(customer.getLastName());
         customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
         customerToUpdate.setAddress(customer.getAddress());
         customerToUpdate.setCity(customer.getCity());
         customerToUpdate.setDistrict(customer.getDistrict());
         customerToUpdate.setGender(customer.getGender());
-        customerToUpdate.setIdentificationType(customer.getIdentificationType());
-        customerToUpdate.setIdentificationNumber(customer.getIdentificationNumber());
         return customerRepository.save(customerToUpdate);
     }
 
     @Override
     public Customer deleteCustomer(Long id) {
         Customer customerToDeactivate = customerRepository.getById(id);
-        if(customerToDeactivate == null) {
+        if(customerToDeactivate == null|| customerToDeactivate.getActivated() == false) {
             return null;
         }
         customerToDeactivate.setActivated(false);
@@ -77,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        return customerRepository.findAllCustomer();
     }
 
 }
