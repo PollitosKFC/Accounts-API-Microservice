@@ -46,7 +46,8 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setGender(customer.getGender());
         newCustomer.setType("CUSTOMER");
         newCustomer.setActivated(true);
-        return customerRepository.save(newCustomer);
+        customerRepository.save(newCustomer);
+        return newCustomer;
     }
 
     @Override
