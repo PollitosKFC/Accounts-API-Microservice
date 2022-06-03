@@ -34,7 +34,7 @@ public class CustomerServiceImplTest {
 
 
     @TestConfiguration
-    static class ArtistServiceImplTestConfiguration {
+        static class CustomerServiceImplTestConfiguration {
         @Bean
         public CustomerService customerService() {
             return new CustomerServiceImpl();
