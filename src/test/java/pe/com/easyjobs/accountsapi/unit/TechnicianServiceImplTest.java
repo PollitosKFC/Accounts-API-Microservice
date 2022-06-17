@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pe.com.easyjobs.accountsapi.entity.Customer;
 import pe.com.easyjobs.accountsapi.entity.Technician;
 import pe.com.easyjobs.accountsapi.repository.TechnicianRepository;
 import pe.com.easyjobs.accountsapi.service.TechnicianService;
@@ -86,5 +87,36 @@ public class TechnicianServiceImplTest {
 
         // Assert
         assertThat(technicianResult).isEqualTo(technician);
+    }
+
+    @Test
+    @DisplayName("When UpdateTechnician with valid data then return Technician")
+    public void WhenUpdateTechnicianWithValidDataThenReturnTechnician() {
+        // Arrange
+        Long id = 1L;
+        Technician technician = new Technician();
+        technician.setId(id);
+        technician.setUserName("username");
+        technician.setPassword("password");
+        technician.setEmail("email");
+
+        Technician technicianUp = new Technician();
+        technicianUp.setPhoneNumber(12312313L);
+        technicianUp.setFirstName("Technician");
+        technicianUp.setLastName("Test");
+        technicianUp.setAddress("address");
+        technicianUp.setCity("city");
+        technicianUp.setDistrict("district");
+        technicianUp.setGender("M");
+
+
+        when(technicianRepository.save(technician)).thenAnswer(invocation -> invocation.getArgument(0));
+        technicianService.updateTechnician(id,technicianUp);
+
+        // Act
+        Technician technicianResult = technicianRepository.getById(id);
+
+        // Assert
+        assertThat(technicianResult).isEqualTo(technicianRepository.getById(id));
     }
 }

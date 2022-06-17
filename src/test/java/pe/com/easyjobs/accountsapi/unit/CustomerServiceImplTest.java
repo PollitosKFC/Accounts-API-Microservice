@@ -101,6 +101,36 @@ public class CustomerServiceImplTest {
         // Assert
         assertThat(customerResult).isEqualTo(customer);
     }
+    @Test
+    @DisplayName("When updateCustomer with valid data then return Customer")
+    public void WhenUpdateCustomerWithValidDataThenReturnCustomer() {
+        // Arrange
+        Long id = 1L;
+        Customer customer = new Customer();
+        customer.setId(id);
+        customer.setUserName("username");
+        customer.setPassword("password");
+        customer.setEmail("email");
+
+        Customer customerUp = new Customer();
+        customerUp.setPhoneNumber(12312313L);
+        customerUp.setFirstName("Customer");
+        customerUp.setLastName("Test");
+        customerUp.setAddress("address");
+        customerUp.setCity("city");
+        customerUp.setDistrict("district");
+        customerUp.setGender("M");
+
+
+        when(customerRepository.save(customer)).thenAnswer(invocation -> invocation.getArgument(0));
+        customerService.updateCustomer(id,customerUp);
+
+        // Act
+        Customer customerResult = customerRepository.getById(id);
+
+        // Assert
+        assertThat(customerResult).isEqualTo(customerRepository.getById(id));
+    }
 
 
 
