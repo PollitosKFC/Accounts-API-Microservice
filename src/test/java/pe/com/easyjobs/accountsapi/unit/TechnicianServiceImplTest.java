@@ -14,6 +14,7 @@ import pe.com.easyjobs.accountsapi.repository.TechnicianRepository;
 import pe.com.easyjobs.accountsapi.service.TechnicianService;
 import pe.com.easyjobs.accountsapi.service.TechnicianServiceImpl;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +57,7 @@ public class TechnicianServiceImplTest {
         // Arrange
         Long id = 1L;
         when(technicianRepository.findById(id)).thenReturn(Optional.empty());
-        String expectedMessage = "Technician not found";
+        String expectedMessage = "No se encontró el técnico con id: 1";
         // Act
         Throwable exception = catchThrowable(() -> {
             Technician technician = technicianService.getByTechnicianId(id);
@@ -71,6 +72,10 @@ public class TechnicianServiceImplTest {
         // Arrange
         Technician technician = new Technician();
         technician.setId(null);
+        technician.setEmail("email");
+        technician.setUserName("useranme");
+        technician.setPassword("password");
+        technician.setEmail("email");
         technician.setPhoneNumber(Long.valueOf(123456789));
         technician.setFirstName("firstname");
         technician.setLastName("lastname");
@@ -79,6 +84,7 @@ public class TechnicianServiceImplTest {
         technician.setDistrict("District");
         technician.setVerified(false);
         technician.setGender("gender");
+        technician.setIdentificationType("type");
 
         when(technicianRepository.save(technician)).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -118,5 +124,27 @@ public class TechnicianServiceImplTest {
 
         // Assert
         assertThat(technicianResult).isEqualTo(technicianRepository.getById(id));
+    }
+    @Test
+    @DisplayName("When Delete Technician With Valid Technician")
+    public void WhenDeleteTechnicianWithValidTechnician() {
+        // Arrange
+        Technician technician = new Technician();
+        technician.setId(1L);
+        technician.setPhoneNumber(Long.valueOf(123456789));
+        technician.setFirstName("firstname");
+        technician.setLastName("lastname");
+        technician.setAddress("address");
+        technician.setCity("City");
+        technician.setDistrict("District");
+        technician.setVerified(false);
+        technician.setGender("gender");
+
+        when(technicianRepository.save(technician)).thenAnswer(invocation -> invocation.getArgument(0));
+        technicianRepository.deleteById(1L);
+        // Act
+        Technician technicianResult = null;
+        // Assert
+        assertThat(technicianResult).isEqualTo(technicianRepository.getById(1L));
     }
 }

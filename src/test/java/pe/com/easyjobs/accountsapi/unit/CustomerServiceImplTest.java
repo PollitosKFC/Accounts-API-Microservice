@@ -131,6 +131,36 @@ public class CustomerServiceImplTest {
         // Assert
         assertThat(customerResult).isEqualTo(customerRepository.getById(id));
     }
+    @Test
+    @DisplayName("When Delete Customer With Valid Customer")
+    public void WhenDeleteCustomerWithValidCustomer() {
+        // Arrange
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setType("type");
+        customer.setIdentificationNumber(1231233);
+        customer.setIdentificationType("CC");
+        customer.setFirstName("Customer");
+        customer.setLastName("Test");
+        customer.setEmail("email");
+        customer.setUserName("username");
+        customer.setPassword("password");
+        customer.setRegisterDate(new Date());
+        customer.setUpdatedDate(new Date());
+        customer.setPhoneNumber(12312313L);
+        customer.setAddress("address");
+        customer.setCity("city");
+        customer.setDistrict("district");
+        customer.setGender("M");
+        customer.setActivated(true);
+
+        when(customerRepository.save(customer)).thenAnswer(invocation -> invocation.getArgument(0));
+        customerRepository.deleteById(1L);
+        // Act
+        Customer customerResult = null;
+        // Assert
+        assertThat(customerResult).isEqualTo(customerRepository.getById(1L));
+    }
 
 
 
