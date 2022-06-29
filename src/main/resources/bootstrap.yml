@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Accounts
+  cloud:
+    config:
+      uri: https://easyjobs-config-service.azurewebsites.net/
+      username: root
+      password: s3cr3t
+#boot:
+ # admin:
+  #  client:
+   #   url: http://localhost:8086

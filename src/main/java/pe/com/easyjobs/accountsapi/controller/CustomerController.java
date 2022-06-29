@@ -1,5 +1,6 @@
 package pe.com.easyjobs.accountsapi.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,10 @@ import pe.com.easyjobs.accountsapi.service.CustomerService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RestController
-@CrossOrigin(origins = "http://localhost:3306")
-@RequestMapping("/customers")
+@RequestMapping("/accounts")
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -24,13 +25,13 @@ public class CustomerController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PostMapping(value = "/createCustomer")
+    @PostMapping(value = "/customers/createCustomer")
     public CustomerResource createCustomer(@RequestBody SaveCustomerResource customer){
         Customer customerCreated = customerService.createCustomer(convertToEntity(customer));
         return convertToResource(customerCreated);
     }
 
-    @GetMapping(value = "/getAllCustomers")
+    @GetMapping(value = "/customers/getAllCustomers")
     public List<CustomerResource> getAllCustomers(){
         List<Customer> customers = customerService.getAllCustomers();
         if (customers == null) {
@@ -42,7 +43,12 @@ public class CustomerController {
         return customerResourceList;
     }
 
-    @GetMapping(value = "/getCustomerById/{id}")
+    @GetMapping(value = "/customers/getCustomerResponse/{id}")
+    public ResponseEntity<Customer> getCustomerResponse(@PathVariable("id") Long id){
+        Customer customer = customerService.getByCustomerId(id);
+        return ResponseEntity.ok(customer);
+    }
+    @GetMapping(value = "/customers/getCustomerById/{id}")
     public CustomerResource getCustomerById(@PathVariable("id") Long id){
         Customer customer = customerService.getByCustomerId(id);
         if (customer == null) {
@@ -51,13 +57,13 @@ public class CustomerController {
         return convertToResource(customer);
     }
 
-    @PutMapping(value = "/updateCustomer/{id}")
+    @PutMapping(value = "/customers/updateCustomer/{id}")
     public CustomerResource updateCustomer(@PathVariable("id") Long id, @RequestBody SaveCustomerResource customer){
         Customer customerUpdated = customerService.updateCustomer(id, convertToEntity(customer));
         return convertToResource(customerUpdated);
     }
 
-    @DeleteMapping(value = "/deleteCustomer/{id}")
+    @DeleteMapping(value = "/customers/deleteCustomer/{id}")
     public CustomerResource deleteCustomer(@PathVariable("id") Long id){
         Customer customerDeleted = customerService.deleteCustomer(id);
         return convertToResource(customerDeleted);
